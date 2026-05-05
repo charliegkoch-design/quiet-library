@@ -2,12 +2,19 @@
 
 import { useState } from "react";
 import { useRouter } from "next/navigation";
-import { CATEGORIES, type Category } from "@/lib/curated";
+import { CATEGORIES, CATEGORIES_PREVIEW_COUNT, type Category } from "@/lib/curated";
 
 export function TopicSearch() {
   const [input, setInput] = useState("");
   const [selected, setSelected] = useState<Category | null>(null);
+  const [showAll, setShowAll] = useState(false);
   const router = useRouter();
+
+  const visibleCategories = showAll
+    ? CATEGORIES
+    : (CATEGORIES.slice(0, CATEGORIES_PREVIEW_COUNT) as readonly Category[]);
+
+  const hiddenCount = CATEGORIES.length - CATEGORIES_PREVIEW_COUNT;
 
   function handleCategoryClick(cat: Category) {
     setSelected(cat === selected ? null : cat);
@@ -37,20 +44,34 @@ export function TopicSearch() {
   return (
     <div className="flex flex-col items-center gap-8 w-full max-w-xl">
       {/* Category pills */}
-      <div className="flex flex-wrap justify-center gap-2">
-        {CATEGORIES.map((cat) => (
-          <button
-            key={cat}
-            onClick={() => handleCategoryClick(cat)}
-            className={`px-4 py-1.5 rounded-full text-sm tracking-wide border transition-all duration-200 cursor-pointer ${
-              selected === cat
-                ? "bg-ink text-parchment border-ink"
-                : "bg-transparent text-ink-muted border-border hover:border-ink-muted hover:text-ink"
-            }`}
-          >
-            {cat}
-          </button>
-        ))}
+      <div className="flex flex-col items-center gap-3 w-full">
+        <div className="flex flex-wrap justify-center gap-2">
+          {visibleCategories.map((cat) => (
+            <button
+              key={cat}
+              onClick={() => handleCategoryClick(cat)}
+              className={`px-4 py-1.5 rounded-full text-sm tracking-wide border transition-all duration-200 cursor-pointer ${
+                selected === cat
+                  ? "bg-ink text-parchment border-ink"
+                  : "bg-transparent text-ink-muted border-border hover:border-ink-muted hover:text-ink"
+              }`}
+            >
+              {cat}
+            </button>
+          ))}
+        </div>
+
+        {/* See all / Show fewer toggle */}
+        <button
+          onClick={() => setShowAll((s) => !s)}
+          className="text-xs text-ink-faint hover:text-ink-muted tracking-widest uppercase transition-colors duration-200 cursor-pointer flex items-center gap-1.5 mt-1"
+        >
+          {showAll ? (
+            <>Show fewer <span className="text-base leading-none">↑</span></>
+          ) : (
+            <>See all {CATEGORIES.length} topics <span className="text-base leading-none">↓</span> <span className="text-ink-faint/50 normal-case tracking-normal">({hiddenCount} more)</span></>
+          )}
+        </button>
       </div>
 
       {/* Divider */}

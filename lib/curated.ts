@@ -17,6 +17,7 @@ export const CATEGORIES = [
   "Art",
   "Baking",
   "Cities",
+  "Climate",
   "Craft",
   "Design",
   "Economics",
@@ -31,13 +32,19 @@ export const CATEGORIES = [
   "Music",
   "Nature",
   "Philosophy",
+  "Poetry",
   "Politics",
   "Psychology",
   "Religion",
   "Science",
+  "Space",
+  "Sports",
   "Technology",
   "Travel",
 ] as const;
+
+/** How many pills to show before the "See all" toggle */
+export const CATEGORIES_PREVIEW_COUNT = 10;
 
 export type Category = (typeof CATEGORIES)[number];
 
