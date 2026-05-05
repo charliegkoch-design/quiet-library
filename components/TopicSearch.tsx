@@ -26,6 +26,13 @@ export function TopicSearch() {
     setSelected(null);
   }
 
+  function handleSearch() {
+    const q = selected ?? input.trim();
+    if (q) {
+      router.push(`/search?q=${encodeURIComponent(q)}`);
+    }
+  }
+
   function handleSurpriseMe() {
     const topic = selected ?? input.trim();
     if (topic) {
@@ -36,7 +43,7 @@ export function TopicSearch() {
   }
 
   function handleKeyDown(e: React.KeyboardEvent<HTMLInputElement>) {
-    if (e.key === "Enter") handleSurpriseMe();
+    if (e.key === "Enter") handleSearch();
   }
 
   const activeLabel = selected ?? (input.trim() || null);
@@ -95,19 +102,37 @@ export function TopicSearch() {
         autoComplete="off"
       />
 
-      {/* Surprise Me button */}
-      <button
-        onClick={handleSurpriseMe}
-        className="group relative px-10 py-4 bg-ink text-parchment text-base tracking-widest uppercase cursor-pointer hover:bg-accent-hover transition-colors duration-300 overflow-hidden"
-        style={{ fontFamily: "var(--font-display)" }}
-      >
-        <span className="relative z-10">
-          {activeLabel ? `Open a ${activeLabel} piece` : "Surprise Me"}
-          <span className="ml-3 inline-block transition-transform duration-300 group-hover:translate-x-1">
-            →
+      {/* Action buttons */}
+      <div className="flex flex-col sm:flex-row items-center gap-3 w-full justify-center">
+        {/* Search button */}
+        <button
+          onClick={handleSearch}
+          disabled={!activeLabel}
+          className="group relative px-10 py-4 bg-ink text-parchment text-base tracking-widest uppercase cursor-pointer hover:bg-accent transition-colors duration-300 disabled:opacity-40 disabled:cursor-not-allowed"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          <span className="relative z-10">
+            Search
+            <span className="ml-3 inline-block transition-transform duration-300 group-hover:translate-x-1">
+              ↗
+            </span>
           </span>
-        </span>
-      </button>
+        </button>
+
+        {/* Surprise Me button */}
+        <button
+          onClick={handleSurpriseMe}
+          className="group relative px-10 py-4 bg-transparent text-ink border border-border text-base tracking-widest uppercase cursor-pointer hover:border-ink-muted hover:text-accent transition-colors duration-300"
+          style={{ fontFamily: "var(--font-display)" }}
+        >
+          <span className="relative z-10">
+            {activeLabel ? `Open a ${activeLabel} piece` : "Surprise Me"}
+            <span className="ml-3 inline-block transition-transform duration-300 group-hover:translate-x-1">
+              →
+            </span>
+          </span>
+        </button>
+      </div>
     </div>
   );
 }
