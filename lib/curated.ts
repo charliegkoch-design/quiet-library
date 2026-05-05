@@ -12,21 +12,31 @@ export interface CuratedEntry {
 }
 
 export const CATEGORIES = [
+  "Anthropology",
   "Architecture",
   "Art",
-  "Anthropology",
   "Baking",
+  "Cities",
+  "Craft",
+  "Design",
   "Economics",
   "Essays",
+  "Film",
+  "Food",
   "History",
   "Language",
   "Literature",
+  "Mathematics",
+  "Medicine",
   "Music",
   "Nature",
   "Philosophy",
+  "Politics",
   "Psychology",
+  "Religion",
   "Science",
   "Technology",
+  "Travel",
 ] as const;
 
 export type Category = (typeof CATEGORIES)[number];
